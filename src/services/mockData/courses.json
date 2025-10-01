@@ -1,0 +1,42 @@
+[
+  {
+    "Id": 1,
+    "name": "Introduction to Computer Science",
+    "color": "#6366f1",
+    "instructor": "Dr. Sarah Chen",
+    "credits": 4,
+    "createdAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "Id": 2,
+    "name": "Calculus II",
+    "color": "#8b5cf6",
+    "instructor": "Prof. Michael Rodriguez",
+    "credits": 4,
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "Id": 3,
+    "name": "English Literature",
+    "color": "#ec4899",
+    "instructor": "Dr. Emily Watson",
+    "credits": 3,
+    "createdAt": "2024-01-15T11:00:00.000Z"
+  },
+  {
+    "Id": 4,
+    "name": "General Chemistry",
+    "color": "#10b981",
+    "instructor": "Prof. James Park",
+    "credits": 4,
+    "createdAt": "2024-01-15T11:30:00.000Z"
+  },
+  {
+    "Id": 5,
+    "name": "World History",
+    "color": "#f59e0b",
+    "instructor": "Dr. Amanda Lee",
+    "credits": 3,
+    "createdAt": "2024-01-15T12:00:00.000Z"
+  }
+]
