@@ -406,7 +406,6 @@ const assignmentService = {
       return true;
     } catch (error) {
       console.error("Error deleting assignments by course:", error?.response?.data?.message || error);
-      return false;
 return false;
     }
   }
