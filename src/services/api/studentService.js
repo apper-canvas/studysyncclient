@@ -1,4 +1,6 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 const { ApperClient } = window.ApperSDK;
 
@@ -8,7 +10,6 @@ const apperClient = new ApperClient({
 });
 
 const TABLE_NAME = 'student_c';
-
 export const studentService = {
   async getAll() {
     try {
@@ -109,7 +110,7 @@ export const studentService = {
         return null;
       }
 
-      if (response.results) {
+if (response.results) {
         const successful = response.results.filter(r => r.success);
         const failed = response.results.filter(r => !r.success);
 
@@ -124,6 +125,33 @@ export const studentService = {
         if (successful.length > 0) {
           const created = successful[0].data;
           toast.success("Student created successfully");
+          
+          // Create corresponding contact in CompanyHub
+          try {
+            const companyHubResult = await apperClient.functions.invoke(
+              import.meta.env.VITE_CREATE_COMPANYHUB_CONTACT,
+              {
+                body: JSON.stringify(created),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            );
+            
+            if (companyHubResult.success) {
+              const responseData = await companyHubResult.json();
+              if (responseData.success) {
+                toast.success('Contact created in CompanyHub');
+              } else {
+                console.info(`apper_info: An error was received in this function: ${import.meta.env.VITE_CREATE_COMPANYHUB_CONTACT}. The response body is: ${JSON.stringify(responseData)}.`);
+                toast.info('Student created, but CompanyHub sync failed');
+              }
+            }
+          } catch (error) {
+            console.info(`apper_info: An error was received in this function: ${import.meta.env.VITE_CREATE_COMPANYHUB_CONTACT}. The error is: ${error.message}`);
+            toast.info('Student created, but CompanyHub sync failed');
+          }
+          
           return {
             Id: created.Id,
             name: created.name_c || '',
