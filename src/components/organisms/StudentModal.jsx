@@ -16,7 +16,7 @@ function StudentModal({ isOpen, onClose, onSubmit, student }) {
 
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+useEffect(() => {
     if (student) {
       setFormData({
         name: student.name,

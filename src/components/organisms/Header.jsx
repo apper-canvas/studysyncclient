@@ -1,9 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useContext } from "react";
 import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import { AuthContext } from "@/App";
 
 const Header = () => {
-const navItems = [
+  const { logout } = useContext(AuthContext);
+
+  const navItems = [
     { to: "/dashboard", label: "Dashboard", icon: "LayoutDashboard" },
     { to: "/courses", label: "Courses", icon: "BookOpen" },
     { to: "/assignments", label: "Assignments", icon: "ClipboardList" },
@@ -11,7 +16,7 @@ const navItems = [
     { to: "/students", label: "Students", icon: "GraduationCap" },
   ];
 
-  return (
+return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -24,35 +29,47 @@ const navItems = [
             </h1>
           </div>
 
-          <nav className="hidden md:flex space-x-1">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `relative px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
-                    isActive
-                      ? "text-primary"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    <ApperIcon name={item.icon} size={18} />
-                    <span>{item.label}</span>
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeNav"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
+          <div className="flex items-center space-x-4">
+            <nav className="hidden md:flex space-x-1">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `relative px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
+                      isActive
+                        ? "text-primary"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <ApperIcon name={item.icon} size={18} />
+                      <span>{item.label}</span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeNav"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={logout}
+              className="hidden md:flex items-center space-x-2"
+            >
+              <ApperIcon name="LogOut" size={18} />
+              <span>Logout</span>
+            </Button>
+          </div>
         </div>
 
         <nav className="md:hidden flex border-t border-slate-200">

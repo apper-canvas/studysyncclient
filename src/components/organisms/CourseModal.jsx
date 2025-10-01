@@ -12,7 +12,7 @@ const CourseModal = ({ isOpen, onClose, onSubmit, course }) => {
     credits: 3,
   });
 
-  useEffect(() => {
+useEffect(() => {
     if (course) {
       setFormData({
         name: course.name,

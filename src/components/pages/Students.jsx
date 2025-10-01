@@ -53,13 +53,13 @@ function Students() {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (student) =>
-          student.name.toLowerCase().includes(term) ||
+student.name.toLowerCase().includes(term) ||
           student.email.toLowerCase().includes(term)
-      );
-    }
-
-    if (statusFilter !== "all") {
-      filtered = filtered.filter((student) => student.status === statusFilter);
+        );
+      }
+  
+      if (statusFilter !== "all") {
+        filtered = filtered.filter((student) => student.status === statusFilter);
     }
 
     setFilteredStudents(filtered);
@@ -150,7 +150,7 @@ function Students() {
             className="sm:w-48"
           >
             <option value="all">All Status</option>
-            <option value="Active">Active</option>
+<option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
             <option value="Graduated">Graduated</option>
           </Select>
@@ -171,10 +171,10 @@ function Students() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredStudents.map((student, index) => (
             <motion.div
-              key={student.Id}
+key={student.Id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
+              transition={{ duration: 0.3 }}
             >
               <StudentCard
                 student={student}

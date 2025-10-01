@@ -63,12 +63,13 @@ const Courses = () => {
     if (!courseToDelete) return;
     
     try {
-      await courseService.delete(courseToDelete.Id);
-      await assignmentService.deleteByCourseId(courseToDelete.Id);
-      await gradeService.deleteByCourseId(courseToDelete.Id);
-      
-      setCourses(courses.filter(c => c.Id !== courseToDelete.Id));
-      setAssignments(assignments.filter(a => a.courseId !== courseToDelete.Id));
+const success = await courseService.delete(courseToDelete.Id);
+      if (success) {
+        await assignmentService.deleteByCourseId(courseToDelete.Id);
+        await gradeService.deleteByCourseId(courseToDelete.Id);
+        setCourses(courses.filter(c => c.Id !== courseToDelete.Id));
+        setAssignments(assignments.filter(a => a.courseId !== courseToDelete.Id));
+      }
       
       toast.success("Course deleted successfully");
       setCourseToDelete(null);
@@ -130,10 +131,10 @@ const Courses = () => {
         >
           {courses.map((course, index) => (
             <motion.div
-              key={course.Id}
+key={course.Id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ duration: 0.3 }}
             >
               <CourseCard
                 course={course}

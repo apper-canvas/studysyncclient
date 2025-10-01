@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { format, isPast, isToday } from "date-fns";
-import courseService from "@/services/api/courseService";
-import assignmentService from "@/services/api/assignmentService";
-import gradeService from "@/services/api/gradeService";
-import Loading from "@/components/ui/Loading";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Assignments from "@/components/pages/Assignments";
+import Grades from "@/components/pages/Grades";
+import Button from "@/components/atoms/Button";
+import Checkbox from "@/components/atoms/Checkbox";
+import Badge from "@/components/atoms/Badge";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Badge from "@/components/atoms/Badge";
-import Checkbox from "@/components/atoms/Checkbox";
-import { toast } from "react-toastify";
+import Loading from "@/components/ui/Loading";
+import courseService from "@/services/api/courseService";
+import gradeService from "@/services/api/gradeService";
+import assignmentService from "@/services/api/assignmentService";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -69,7 +71,7 @@ const Dashboard = () => {
   const completionRate = totalAssignments > 0 ? Math.round((completedCount / totalAssignments) * 100) : 0;
 
   const calculateCourseAverage = (courseId) => {
-    const courseGrades = grades.filter(g => g.courseId === courseId);
+const courseGrades = grades.filter(g => g.courseId === courseId);
     if (courseGrades.length === 0) return null;
     
     let totalWeightedScore = 0;
@@ -188,39 +190,42 @@ const Dashboard = () => {
               message="You have no pending assignments. Great work!"
             />
           ) : (
-            <div className="space-y-3">
+<div className="space-y-3">
               {upcomingAssignments.map((assignment) => {
                 const course = courses.find(c => c.Id === assignment.courseId);
                 const dueDate = new Date(assignment.dueDate);
-                const isOverdue = isPast(dueDate);
+                const isOverdue = isPast(dueDate) && !isToday(dueDate);
                 const isDueToday = isToday(dueDate);
-
+                
                 return (
                   <motion.div
                     key={assignment.Id}
-                    className="flex items-center space-x-4 p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors duration-200"
-                    whileHover={{ x: 4 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-start space-x-3 p-4 bg-white rounded-lg border border-slate-200 hover:shadow-sm transition-shadow"
                   >
                     <Checkbox
                       checked={assignment.completed}
                       onChange={() => handleToggleComplete(assignment.Id)}
+                      className="mt-1"
                     />
-                    
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2 mb-1">
+                      <div className="flex items-center space-x-2 mb-2">
                         {course && (
                           <>
-                            <div 
-                              className="w-2 h-2 rounded-full"
+                            <div
+                              className="w-3 h-3 rounded-full flex-shrink-0"
                               style={{ backgroundColor: course.color }}
                             />
                             <span className="text-sm font-medium text-slate-700">{course.name}</span>
                           </>
                         )}
                       </div>
-                      <p className="text-base font-semibold text-slate-900 truncate">
+                      <h3 className={`font-semibold text-slate-900 mb-1 ${
+                        assignment.completed ? 'line-through text-slate-500' : ''
+                      }`}>
                         {assignment.title}
-                      </p>
+                      </h3>
                     </div>
 
                     <Badge variant={isOverdue ? "error" : isDueToday ? "warning" : "default"}>
@@ -258,19 +263,20 @@ const Dashboard = () => {
           ) : (
             <div className="space-y-4">
               {courses.slice(0, 5).map((course) => {
-                const average = calculateCourseAverage(course.Id);
+const average = calculateCourseAverage(course.Id);
+                
                 return (
-                  <div key={course.Id} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <div 
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: course.color }}
-                        />
-                        <span className="text-sm font-medium text-slate-700 truncate">
-                          {course.name}
-                        </span>
+<div key={course.Id} className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-200">
+                    <div className="flex items-center space-x-3">
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: course.color }}
+                      />
+                      <div>
+                        <span className="text-sm font-medium text-slate-900">{course.name}</span>
                       </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
                       <span className={`text-lg font-bold ${average >= 90 ? "text-success" : average >= 80 ? "text-primary" : average >= 70 ? "text-warning" : "text-error"}`}>
                         {average !== null ? `${average}%` : "N/A"}
                       </span>

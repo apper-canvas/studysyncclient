@@ -91,7 +91,7 @@ const Grades = () => {
   };
 
   const calculateCourseAverage = (courseId) => {
-    const courseGrades = grades.filter(g => g.courseId === courseId);
+const courseGrades = grades.filter(g => g.courseId === courseId);
     if (courseGrades.length === 0) return null;
     
     let totalWeightedScore = 0;
@@ -106,7 +106,7 @@ const Grades = () => {
     return totalWeight > 0 ? totalWeightedScore / totalWeight : 0;
   };
 
-  const getCategoryGrades = (courseId) => {
+const getCategoryGrades = (courseId) => {
     const courseGrades = grades.filter(g => g.courseId === courseId);
     const categories = {};
     
@@ -230,7 +230,7 @@ const Grades = () => {
 
                   <div className="space-y-6">
                     {Object.entries(categoryGrades).map(([category, categoryItems]) => {
-                      const categoryAverage = categoryItems.reduce((sum, g) => {
+const categoryAverage = categoryItems.reduce((sum, g) => {
                         return sum + (g.score / g.maxScore) * 100;
                       }, 0) / categoryItems.length;
 
@@ -259,16 +259,16 @@ const Grades = () => {
                                   const percentage = (grade.score / grade.maxScore) * 100;
                                   return (
                                     <tr 
-                                      key={grade.Id}
-                                      className={`${index !== categoryItems.length - 1 ? "border-b border-slate-200" : ""} hover:bg-white transition-colors`}
+key={grade.Id}
+                                      className="border-t border-slate-100"
                                     >
                                       <td className="px-4 py-3 text-sm font-medium text-slate-900">
                                         {grade.assignmentName}
                                       </td>
-                                      <td className="px-4 py-3 text-sm text-center text-slate-700">
+                                      <td className="px-4 py-3 text-sm text-slate-600">
                                         {grade.score} / {grade.maxScore}
                                       </td>
-                                      <td className="px-4 py-3 text-sm text-center text-slate-700">
+                                      <td className="px-4 py-3 text-sm text-slate-600">
                                         {grade.weight}%
                                       </td>
                                       <td className="px-4 py-3 text-center">

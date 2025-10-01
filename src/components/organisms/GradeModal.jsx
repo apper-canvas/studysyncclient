@@ -14,7 +14,7 @@ const GradeModal = ({ isOpen, onClose, onSubmit, grade, courses }) => {
     category: "Homework",
   });
 
-  useEffect(() => {
+useEffect(() => {
     if (grade) {
       setFormData({
         courseId: grade.courseId,

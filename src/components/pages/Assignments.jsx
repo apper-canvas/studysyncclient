@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { isPast, isToday, isTomorrow, isThisWeek } from "date-fns";
-import courseService from "@/services/api/courseService";
-import assignmentService from "@/services/api/assignmentService";
-import Loading from "@/components/ui/Loading";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { isPast, isThisWeek, isToday, isTomorrow } from "date-fns";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import AssignmentCard from "@/components/organisms/AssignmentCard";
+import ConfirmDialog from "@/components/organisms/ConfirmDialog";
+import AssignmentModal from "@/components/organisms/AssignmentModal";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import AssignmentCard from "@/components/organisms/AssignmentCard";
-import AssignmentModal from "@/components/organisms/AssignmentModal";
-import ConfirmDialog from "@/components/organisms/ConfirmDialog";
-import Button from "@/components/atoms/Button";
-import ApperIcon from "@/components/ApperIcon";
-import { toast } from "react-toastify";
+import Loading from "@/components/ui/Loading";
+import courseService from "@/services/api/courseService";
+import assignmentService from "@/services/api/assignmentService";
 
 const Assignments = () => {
   const [courses, setCourses] = useState([]);
@@ -104,7 +104,7 @@ const Assignments = () => {
     
     switch (filter) {
       case "overdue":
-        return assignments.filter(a => !a.completed && isPast(new Date(a.dueDate)));
+return assignments.filter(a => !a.completed && isPast(new Date(a.dueDate)));
       case "today":
         return assignments.filter(a => !a.completed && isToday(new Date(a.dueDate)));
       case "thisWeek":
@@ -131,7 +131,7 @@ const Assignments = () => {
     };
 
     sorted.forEach(assignment => {
-      const dueDate = new Date(assignment.dueDate);
+const dueDate = new Date(assignment.dueDate);
       
       if (assignment.completed) {
         return;
@@ -165,7 +165,7 @@ const Assignments = () => {
 
   const filters = [
     { value: "all", label: "All Assignments", count: assignments.length },
-    { value: "pending", label: "Pending", count: assignments.filter(a => !a.completed).length },
+{ value: "pending", label: "Pending", count: assignments.filter(a => !a.completed).length },
     { value: "overdue", label: "Overdue", count: assignments.filter(a => !a.completed && isPast(new Date(a.dueDate))).length },
     { value: "today", label: "Due Today", count: assignments.filter(a => !a.completed && isToday(new Date(a.dueDate))).length },
     { value: "thisWeek", label: "This Week", count: assignments.filter(a => !a.completed && isThisWeek(new Date(a.dueDate))).length },
@@ -244,24 +244,18 @@ const Assignments = () => {
                       ({groupAssignments.length})
                     </span>
                   </h2>
-                  <div className="space-y-3">
+<div className="space-y-3">
                     {groupAssignments.map((assignment, index) => {
                       const course = courses.find(c => c.Id === assignment.courseId);
                       return (
-                        <motion.div
+                        <AssignmentCard
                           key={assignment.Id}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                        >
-                          <AssignmentCard
-                            assignment={assignment}
-                            course={course}
-                            onToggle={handleToggleComplete}
-                            onEdit={handleEditAssignment}
-                            onDelete={handleDeleteAssignment}
-                          />
-                        </motion.div>
+                          assignment={assignment}
+                          course={course}
+                          onToggle={handleToggleComplete}
+                          onEdit={handleEditAssignment}
+                          onDelete={handleDeleteAssignment}
+                        />
                       );
                     })}
                   </div>

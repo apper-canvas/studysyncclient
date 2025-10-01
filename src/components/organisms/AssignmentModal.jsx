@@ -15,7 +15,7 @@ const AssignmentModal = ({ isOpen, onClose, onSubmit, assignment, courses }) => 
     description: "",
   });
 
-  useEffect(() => {
+useEffect(() => {
     if (assignment) {
       setFormData({
         courseId: assignment.courseId,
