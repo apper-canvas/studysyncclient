@@ -89,7 +89,7 @@ export const studentService = {
     }
   },
 
-  async create(studentData) {
+async create(studentData) {
     try {
       const params = {
         records: [{

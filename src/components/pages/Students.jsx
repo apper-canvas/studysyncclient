@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
@@ -14,6 +15,7 @@ import ConfirmDialog from "@/components/organisms/ConfirmDialog";
 import { studentService } from "@/services/api/studentService";
 
 function Students() {
+  const { user } = useSelector((state) => state.user);
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,6 @@ function Students() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
-
   useEffect(() => {
     loadStudents();
   }, []);
@@ -90,8 +91,13 @@ student.name.toLowerCase().includes(term) ||
     }
   };
 
-  const handleSubmit = async (studentData) => {
+const handleSubmit = async (studentData) => {
     try {
+      const userContext = {
+        userId: user?.userId,
+        companyId: user?.accounts?.[0]?.companyId
+      };
+      
       if (editingStudent) {
         const updated = await studentService.update(editingStudent.Id, studentData);
         setStudents((prev) =>
@@ -99,7 +105,7 @@ student.name.toLowerCase().includes(term) ||
         );
         toast.success("Student updated successfully");
       } else {
-        const created = await studentService.create(studentData);
+        const created = await studentService.create(studentData, userContext);
         setStudents((prev) => [...prev, created]);
         toast.success("Student created successfully");
       }
