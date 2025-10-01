@@ -5,6 +5,7 @@ import Dashboard from "@/components/pages/Dashboard";
 import Courses from "@/components/pages/Courses";
 import Assignments from "@/components/pages/Assignments";
 import Grades from "@/components/pages/Grades";
+import Students from "@/components/pages/Students";
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="courses" element={<Courses />} />
           <Route path="assignments" element={<Assignments />} />
-          <Route path="grades" element={<Grades />} />
+<Route path="grades" element={<Grades />} />
+          <Route path="students" element={<Students />} />
         </Route>
       </Routes>
     </BrowserRouter>

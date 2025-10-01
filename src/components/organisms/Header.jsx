@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
 
 const Header = () => {
-  const navItems = [
+const navItems = [
     { to: "/dashboard", label: "Dashboard", icon: "LayoutDashboard" },
     { to: "/courses", label: "Courses", icon: "BookOpen" },
     { to: "/assignments", label: "Assignments", icon: "ClipboardList" },
     { to: "/grades", label: "Grades", icon: "BarChart3" },
+    { to: "/students", label: "Students", icon: "GraduationCap" },
   ];
 
   return (
