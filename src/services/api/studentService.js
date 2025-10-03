@@ -127,7 +127,7 @@ if (response.results) {
           toast.success("Student created successfully");
           
           // Create corresponding contact in CompanyHub
-          try {
+try {
             const companyHubResult = await apperClient.functions.invoke(
               import.meta.env.VITE_CREATE_COMPANYHUB_CONTACT,
               {
@@ -150,6 +150,34 @@ if (response.results) {
           } catch (error) {
             console.info(`apper_info: An error was received in this function: ${import.meta.env.VITE_CREATE_COMPANYHUB_CONTACT}. The error is: ${error.message}`);
             toast.info('Student created, but CompanyHub sync failed');
+          }
+          
+          // Create Stripe customer if student status is Graduated
+          if (created.status_c === 'Graduated') {
+            try {
+              const stripeResult = await apperClient.functions.invoke(
+                import.meta.env.VITE_CREATE_STRIPE_CUSTOMER,
+                {
+                  body: JSON.stringify(created),
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                }
+              );
+              
+              if (stripeResult.success) {
+                const responseData = await stripeResult.json();
+                if (responseData.success) {
+                  toast.success('Customer created in Stripe');
+                } else {
+                  console.info(`apper_info: An error was received in this function: ${import.meta.env.VITE_CREATE_STRIPE_CUSTOMER}. The response body is: ${JSON.stringify(responseData)}.`);
+                  toast.info('Student created, but Stripe sync failed');
+                }
+              }
+            } catch (error) {
+              console.info(`apper_info: An error was received in this function: ${import.meta.env.VITE_CREATE_STRIPE_CUSTOMER}. The error is: ${error.message}`);
+              toast.info('Student created, but Stripe sync failed');
+            }
           }
           
           return {
