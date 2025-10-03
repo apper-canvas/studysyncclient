@@ -14,12 +14,13 @@ const assignmentService = {
   async getAll() {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Id" } },
           { field: { Name: "course_id_c" }, referenceField: { field: { Name: "name_c" } } },
           { field: { Name: "title_c" } },
           { field: { Name: "due_date_c" } },
           { field: { Name: "priority_c" } },
+          { field: { Name: "status_c" } },
           { field: { Name: "completed_c" } },
           { field: { Name: "description_c" } },
           { field: { Name: "created_at_c" } }
@@ -38,13 +39,14 @@ const assignmentService = {
         return [];
       }
 
-      return response.data.map(assignment => ({
+return response.data.map(assignment => ({
         Id: assignment.Id,
         courseId: assignment.course_id_c?.Id || null,
         courseName: assignment.course_id_c?.name_c || '',
         title: assignment.title_c || '',
         dueDate: assignment.due_date_c,
         priority: assignment.priority_c || 'medium',
+        status: assignment.status_c || 'Not Started',
         completed: assignment.completed_c || false,
         description: assignment.description_c || '',
         createdAt: assignment.created_at_c
@@ -63,8 +65,9 @@ const assignmentService = {
           { field: { Name: "Id" } },
           { field: { Name: "course_id_c" }, referenceField: { field: { Name: "name_c" } } },
           { field: { Name: "title_c" } },
-          { field: { Name: "due_date_c" } },
+{ field: { Name: "due_date_c" } },
           { field: { Name: "priority_c" } },
+          { field: { Name: "status_c" } },
           { field: { Name: "completed_c" } },
           { field: { Name: "description_c" } },
           { field: { Name: "created_at_c" } }
@@ -82,9 +85,10 @@ const assignmentService = {
         Id: assignment.Id,
         courseId: assignment.course_id_c?.Id || null,
         courseName: assignment.course_id_c?.name_c || '',
-        title: assignment.title_c || '',
+title: assignment.title_c || '',
         dueDate: assignment.due_date_c,
         priority: assignment.priority_c || 'medium',
+        status: assignment.status_c || 'Not Started',
         completed: assignment.completed_c || false,
         description: assignment.description_c || '',
         createdAt: assignment.created_at_c
@@ -98,12 +102,13 @@ const assignmentService = {
   async getByCourseId(courseId) {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Id" } },
           { field: { Name: "course_id_c" }, referenceField: { field: { Name: "name_c" } } },
           { field: { Name: "title_c" } },
           { field: { Name: "due_date_c" } },
           { field: { Name: "priority_c" } },
+          { field: { Name: "status_c" } },
           { field: { Name: "completed_c" } },
           { field: { Name: "description_c" } },
           { field: { Name: "created_at_c" } }
@@ -132,9 +137,10 @@ const assignmentService = {
         Id: assignment.Id,
         courseId: assignment.course_id_c?.Id || null,
         courseName: assignment.course_id_c?.name_c || '',
-        title: assignment.title_c || '',
+title: assignment.title_c || '',
         dueDate: assignment.due_date_c,
         priority: assignment.priority_c || 'medium',
+        status: assignment.status_c || 'Not Started',
         completed: assignment.completed_c || false,
         description: assignment.description_c || '',
         createdAt: assignment.created_at_c
@@ -153,7 +159,8 @@ const assignmentService = {
           title_c: assignmentData.title,
           due_date_c: assignmentData.dueDate,
           priority_c: assignmentData.priority,
-          completed_c: false,
+completed_c: false,
+          status_c: assignmentData.status || 'Not Started',
           description_c: assignmentData.description || ''
         }]
       };
@@ -186,8 +193,9 @@ const assignmentService = {
             courseId: created.course_id_c?.Id || null,
             courseName: created.course_id_c?.name_c || '',
             title: created.title_c || '',
-            dueDate: created.due_date_c,
+dueDate: created.due_date_c,
             priority: created.priority_c || 'medium',
+            status: created.status_c || 'Not Started',
             completed: created.completed_c || false,
             description: created.description_c || '',
             createdAt: created.created_at_c
@@ -224,10 +232,12 @@ const assignmentService = {
       if (assignmentData.completed !== undefined) {
         updateData.completed_c = assignmentData.completed;
       }
-      if (assignmentData.description !== undefined) {
+if (assignmentData.description !== undefined) {
         updateData.description_c = assignmentData.description;
+}
+      if (assignmentData.status !== undefined) {
+        updateData.status_c = assignmentData.status;
       }
-
       const params = {
         records: [updateData]
       };
@@ -256,12 +266,13 @@ const assignmentService = {
           const updated = successful[0].data;
           toast.success("Assignment updated successfully");
           return {
-            Id: updated.Id,
+Id: updated.Id,
             courseId: updated.course_id_c?.Id || null,
             courseName: updated.course_id_c?.name_c || '',
             title: updated.title_c || '',
             dueDate: updated.due_date_c,
             priority: updated.priority_c || 'medium',
+            status: updated.status_c || 'Not Started',
             completed: updated.completed_c || false,
             description: updated.description_c || '',
             createdAt: updated.created_at_c
@@ -355,10 +366,11 @@ const assignmentService = {
           return {
             Id: updated.Id,
             courseId: updated.course_id_c?.Id || null,
-            courseName: updated.course_id_c?.name_c || '',
+courseName: updated.course_id_c?.name_c || '',
             title: updated.title_c || '',
             dueDate: updated.due_date_c,
             priority: updated.priority_c || 'medium',
+            status: updated.status_c || 'Not Started',
             completed: updated.completed_c || false,
             description: updated.description_c || '',
             createdAt: updated.created_at_c

@@ -7,11 +7,12 @@ import Label from "@/components/atoms/Label";
 import Button from "@/components/atoms/Button";
 
 const AssignmentModal = ({ isOpen, onClose, onSubmit, assignment, courses }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     courseId: "",
     title: "",
     dueDate: "",
     priority: "medium",
+    status: "Not Started",
     description: "",
   });
 
@@ -22,6 +23,7 @@ useEffect(() => {
         title: assignment.title,
         dueDate: format(new Date(assignment.dueDate), "yyyy-MM-dd'T'HH:mm"),
         priority: assignment.priority,
+        status: assignment.status || "Not Started",
         description: assignment.description || "",
       });
     } else {
@@ -30,17 +32,19 @@ useEffect(() => {
         title: "",
         dueDate: "",
         priority: "medium",
+        status: "Not Started",
         description: "",
       });
     }
   }, [assignment, courses, isOpen]);
 
-  const handleSubmit = (e) => {
+const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
       ...formData,
       courseId: parseInt(formData.courseId),
       dueDate: new Date(formData.dueDate).toISOString(),
+      status: formData.status,
     });
     onClose();
   };
@@ -96,8 +100,20 @@ useEffect(() => {
           <option value="low">Low Priority</option>
           <option value="medium">Medium Priority</option>
           <option value="high">High Priority</option>
-        </SelectField>
+</SelectField>
 
+        <SelectField
+          label="Status"
+          name="status"
+          value={formData.status}
+          onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+          required
+        >
+          <option value="Not Started">Not Started</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Submitted">Submitted</option>
+          <option value="Graded">Graded</option>
+        </SelectField>
         <div className="space-y-2">
           <Label htmlFor="description">Description</Label>
           <textarea
